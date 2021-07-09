@@ -84,17 +84,6 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                     Text('${snapshot.data!.temp}°', style: Theme.of(context).textTheme.headline2),
                     Text('최고 ${snapshot.data!.tempMax}°/ 최저 ${snapshot.data!.tempMin}°'),
                     //Image.network('http://openweathermap.org/img/wn/${snapshot.data!.weatherIcon}@2x.png', scale: 0.4),
-                    /*snapshot.data!.code == 800
-                        ? Icon(Icons.wb_sunny)
-                        : snapshot.data!.code / 100 == 8 ||
-                        snapshot.data!.code / 100 == 2
-                        ? Icon(Icons.wb_cloudy)
-                        : snapshot.data!.code / 100 == 3 ||
-                        snapshot.data!.code / 100 == 5
-                        ? Icon(Icons.beach_access)
-                        : snapshot.data!.code / 100 == 6
-                        ? Icon(Icons.ac_unit)
-                        : Icon(Icons.cloud_circle)*/
                   ],
                 );
               }
