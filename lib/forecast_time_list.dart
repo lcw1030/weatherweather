@@ -35,12 +35,15 @@ class _ForecastTimeListState extends State<ForecastTimeList> {
                   height: MediaQuery.of(context).size.height,
                   child: FutureBuilder(
                     future: getHourlyData(idx),
-                    builder: (context, AsyncSnapshot<HourlyWeather> snapshot) {
+                    builder: (context, AsyncSnapshot<Weather> snapshot) {
                       if(snapshot.hasData == false) {
                         return CircularProgressIndicator();
                       }
                       else{
-                        HourlyWeather weatherData=snapshot.data!;
+                        Weather weatherData=snapshot.data!;
+                        var displayData = ExtractWeather(widget.type, weatherData);
+                        print(displayData[widget.type]);
+                        //print(displayData[widget.type]![2]);
                         String time = weatherData.dt.hour >= 12 ? '오후': '오전';
                         int hour = weatherData.dt.hour > 12? weatherData.dt.hour-12: weatherData.dt.hour;
                         hour = weatherData.dt.hour == 0? 12: weatherData.dt.hour;
@@ -53,11 +56,13 @@ class _ForecastTimeListState extends State<ForecastTimeList> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text('$time $hour시'),
+                                Text('${displayData[widget.type]![3]}'),
+                                //Image.asset('images/icon_weather/${displayData[widget.type]![0]}.png'),
                                 Expanded(
-                                  child: Image.asset('images/icon_weather/${snapshot.data!.weatherIcon}.png'),
+                                  flex: 3,
+                                  child: Image.asset('images/icon_weather/${displayData[widget.type]![1]}.png'),
                                 ),
-                                Text('${snapshot.data!.temp}°'),
-                                Text('${widget.type}'),
+                                Text('${displayData[widget.type]![2]}'),
                               ],
                             ),
                           ),
@@ -77,7 +82,7 @@ class _ForecastTimeListState extends State<ForecastTimeList> {
   }
 }
 
-void _forecastDialog(BuildContext context, HourlyWeather weather, int tmp) {
+void _forecastDialog(BuildContext context, Weather weather, int tmp) {
 
   int month = weather.dt.month;
   int date = weather.dt.day;
@@ -100,7 +105,7 @@ void _forecastDialog(BuildContext context, HourlyWeather weather, int tmp) {
   DisplayWeather displayTemp = DisplayWeather(weatherData: '온도: ${weather.temp}°', description1: '체감: ${weather.feelsLike}°');
   DisplayWeather displayRain = DisplayWeather(weatherData: '강수: ${weather.rain}mm', description1: '없음');
   DisplayWeather displayUv = DisplayWeather(weatherData: '자외선 수치: ${weather.uvi}', description1: '$uvDeg');
-  DisplayWeather displayWind = DisplayWeather(weatherData: '바람: ${weather.wind}km/h', description1: '남서', description2: '약함');
+  DisplayWeather displayWind = DisplayWeather(weatherData: '바람: ${weather.windSpeed}km/h', description1: '남서', description2: '약함');
   DisplayWeather displayHumidity = DisplayWeather(weatherData: '습도: ${weather.humidity}%', description1: '$humidityDeg');
 
   showDialog(

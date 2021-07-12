@@ -6,8 +6,8 @@ import 'package:weatherweather/forecast_time_list.dart';
 class Screen extends StatefulWidget {
   final String type;
   final String main;
-  final String value;
   final String icon;
+  final String value;
   final String description1;
   final String description2;
   //final int idx;
@@ -15,8 +15,8 @@ class Screen extends StatefulWidget {
   Screen({
     required this.type,
     required this.main,
-    required this.value,
     required this.icon,
+    required this.value,
     required this.description1,
     required this.description2});
   @override
@@ -32,7 +32,7 @@ class _ScreenState extends State<Screen> {
     //print(widget.value);
     return Container(
         color: Theme.of(context).primaryColor,
-        padding: EdgeInsets.all(25),
+        padding: EdgeInsets.all(20),
         constraints: BoxConstraints(
           maxHeight: double.infinity,
         ),
@@ -47,7 +47,7 @@ class _ScreenState extends State<Screen> {
               style: Theme.of(context).textTheme.headline4,
             ),
             Image.asset('images/icon_weather/${widget.icon}.png', scale: 1.5),
-            Text('${widget.value}°', style: Theme.of(context).textTheme.headline2),
+            Text('${widget.value}', style: Theme.of(context).textTheme.headline2),
             Text('${widget.description1}'),
             Text('${widget.description2}'),
 

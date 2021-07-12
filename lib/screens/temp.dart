@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weatherweather/screen.dart';
-
 import 'package:weatherweather/weather_api.dart';
-
 import 'package:weatherweather/weather_api_class.dart';
 class Temp extends StatefulWidget {
   //final int idx;

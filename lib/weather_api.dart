@@ -18,6 +18,13 @@ Future<Weather> getCurrentData() async {
   if (response.statusCode == 200) {
     var data = json.decode(response.body);
     print(data["current"]);
+    print(data["current"]["feels_like"]);
+    //print(data["daily"]["pop"]);
+    print(data["current"]["rain"]?["1h"]);
+    print(data["current"]["uvi"]);
+    print(data["current"]["humidity"]);
+    print(data["current"]["wind_speed"]);
+    print(data["current"]["wind_deg"]);
     //print(data["hourly"][0]["temp"]["max"]);
     try {
       //weather = Weather(temp: "1", tempMax: "1", tempMin: "1", weatherMain: "1", code: 1, weatherIcon: "02d", feelsLike: "3", rain: "1", humidity: "1", wind: "1", uvi: 0.89);
@@ -29,21 +36,33 @@ Future<Weather> getCurrentData() async {
         weatherDescription: data["current"]["weather"][0]["description"].toString(),
         //code: int.parse(data["weather"][0]["id"].toString()),
         weatherIcon: data["current"]["weather"][0]["icon"].toString(),
+        dt: DateTime.fromMillisecondsSinceEpoch(int.parse(data["current"]["dt"].toString())*1000),
+        feelsLike: data["current"]["feels_like"].toString(),
+        pop: '0',//data["daily"]["pop"].toString(),
+        rain: double.parse(data["current"]["rain"]?["1h"].toString()?? '0'),
+        uvi: double.parse(data["current"]["uvi"].toString()).toInt(),
+        humidity: int.parse(data["current"]["humidity"].toString()),
+        windSpeed: double.parse(data["current"]["wind_speed"].toString()),
+        windDirection: data["current"]["wind_deg"].toString(),
       );
     } catch (e) {
-      weather = null as Weather;
+      //weather = null as Weather;
+      weather = Weather(temp: "0", tempMax: "0", tempMin: "0", weatherMain: "0", weatherIcon: "01d", feelsLike: "0", pop: "0", rain: 0, humidity: 0, windSpeed: 0, windDirection: '0', uvi: 0, dt: DateTime.now(), weatherDescription: 'default');
+
       print(e);
     }
   } else {
-    weather = null as Weather;
+    weather = Weather(temp: "0", tempMax: "0", tempMin: "0", weatherMain: "0", weatherIcon: "01d", feelsLike: "0", pop: "0", rain: 0, humidity: 0, windSpeed: 0, windDirection: '0', uvi: 0, dt: DateTime.now(), weatherDescription: 'default');
+
+    //weather = null as Weather;
   }
   return weather;
 }
 
-Future<HourlyWeather> getHourlyData(int idx) async {
+Future<Weather> getHourlyData(int idx) async {
   String queryStr = '$ENDPOINT/data/2.5/onecall?lat=$LAT&lon=$LON&exclude=minutely,alerts&appid=$APIKEY&units=metric&lang=kr';
   http.Response response = await http.get(Uri.parse(queryStr));
-  HourlyWeather weather;
+  Weather weather;
   if (response.statusCode == 200) {
     var data = json.decode(response.body);
 
@@ -56,13 +75,13 @@ Future<HourlyWeather> getHourlyData(int idx) async {
 
     //print(double.parse(data["hourly"][0]["dt"].toString())*1000);
     //print(data["hourly"][0]["temp"]["max"]);
-    print(data["hourly"][idx]);
+    //print(data["hourly"][idx]);
     //print(data["hourly"][idx]["weather"][0]["main"]);//["weather"]["main"]);
     try {
       //var timeDath = DateTime.fromMillisecondsSinceEpoch(int.parse(data["hourly"][idx]["dt"].toString())*1000);
       //String time = ()
       //weather = Weather(temp: "1", tempMax: "1", tempMin: "1", weatherMain: "1", code: 1, weatherIcon: "02d", feelsLike: "3", rain: "1", humidity: "1", wind: "1", uvi: 0.89);
-      weather = HourlyWeather(
+      weather = Weather(
         temp: data["hourly"][idx]["temp"].toString(),
         tempMax: data["hourly"][idx]["temp"].toString(),
         tempMin: data["hourly"][idx]["temp"].toString(),
@@ -72,18 +91,19 @@ Future<HourlyWeather> getHourlyData(int idx) async {
         dt: DateTime.fromMillisecondsSinceEpoch(int.parse(data["hourly"][idx]["dt"].toString())*1000),
         feelsLike: data["hourly"][idx]["feels_like"].toString(),
         pop: data["hourly"][idx]["pop"].toString(),
-        rain: data["hourly"][idx]["rain"]?["1h"].toString() ?? '0',
+        rain: double.parse(data["hourly"][idx]["rain"]?["1h"].toString()?? '0'),
         uvi: double.parse(data["hourly"][idx]["uvi"].toString()).toInt(),
         humidity: int.parse(data["hourly"][idx]["humidity"].toString()),
-        wind: data["hourly"][idx]["wind_speed"].toString(),
+        windSpeed: double.parse(data["hourly"][idx]["wind_speed"].toString()),
+        windDirection: data["hourly"][idx]["wind_deg"].toString(),
       );
     } catch (e) {
-      weather = HourlyWeather(temp: "1", tempMax: "1", tempMin: "1", weatherMain: "1", weatherIcon: "02d", feelsLike: "3", pop: "1", rain: "1", humidity: 1, wind: "1", uvi: 7, dt: DateTime.now(), weatherDescription: 'default');
+      weather = Weather(temp: "0", tempMax: "0", tempMin: "0", weatherMain: "0", weatherIcon: "01d", feelsLike: "0", pop: "0", rain: 0, humidity: 0, windSpeed: 0, windDirection: '0', uvi: 0, dt: DateTime.now(), weatherDescription: 'default');
 
       print(e);
     }
   } else {
-    weather = HourlyWeather(temp: "1", tempMax: "1", tempMin: "1", weatherMain: "1", weatherIcon: "02d", feelsLike: "3", pop: "1", rain: "1", humidity: 1, wind: "1", uvi: 7, dt: DateTime.now(), weatherDescription: 'default');
+    weather = Weather(temp: "0", tempMax: "0", tempMin: "0", weatherMain: "0", weatherIcon: "01d", feelsLike: "0", pop: "0", rain: 0, humidity: 0, windSpeed: 0, windDirection: '0', uvi: 0, dt: DateTime.now(), weatherDescription: 'default');
 
     //weather = null as HourlyWeather;
   }
