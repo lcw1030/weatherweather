@@ -8,6 +8,8 @@ class Humidity extends StatefulWidget {
 class _HumidityState extends State<Humidity> {
   @override
   Widget build(BuildContext context) {
-    return Screen();
+    return Container(
+        child: Text("rain"),
+    );
   }
 }

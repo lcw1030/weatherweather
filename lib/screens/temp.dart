@@ -15,7 +15,7 @@ class _TempState extends State<Temp> {
 
   @override
   Widget build(BuildContext context) {
-    /*return Column(
+    return Column(
       children: <Widget> [
         FutureBuilder(
             future: getCurrentData(),
@@ -24,25 +24,20 @@ class _TempState extends State<Temp> {
                 print('snapshot');
                 return CircularProgressIndicator();
               }
-              return
-            }
+              return Screen(
+                type: 'temp',
+                main: '${snapshot.data!.weatherDescription}',
+                value: '${snapshot.data!.temp}',
+                icon: '${snapshot.data!.weatherIcon}',
+                description1: '최고 ${snapshot.data!.tempMax}°/최저 ${snapshot.data!.tempMin}°',
+                description2: '',
+              );
+
+            },
         ),
-        Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-    children: <Widget>[
-    //Text('종로구 공평'),
-    Image.asset('images/icon_weather/${snapshot.data!.weatherIcon}.png', scale: 1.5),
-    Text('${snapshot.data!.temp}°', style: Theme.of(context).textTheme.headline2),
-    Text('최고 ${snapshot.data!.tempMax}°/ 최저 ${snapshot.data!.tempMin}°'),
-    //Image.network('http://openweathermap.org/img/wn/${snapshot.data!.weatherIcon}@2x.png', scale: 0.4),
-    Screen(
-    type: '${snapshot.data!.weatherDescription}',
-    description1:
-    ),
-    ],
-    );
+
       ],
-    );*/
-    return Screen();
+    );
+    //return Screen();
   }
 }

@@ -93,6 +93,8 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
             backgroundColor: Styles.morningBar,
             onTap: _onTap,
             currentIndex: _currentIdx,
+            selectedIconTheme: IconThemeData(opacity: 0.0, size: 0),
+            unselectedIconTheme: IconThemeData(opacity: 0.0, size: 0),
             items: [
               BottomNavigationBarItem(
                 label: '온도',

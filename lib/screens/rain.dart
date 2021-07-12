@@ -8,6 +8,8 @@ class Rain extends StatefulWidget {
 class _RainState extends State<Rain> {
   @override
   Widget build(BuildContext context) {
-    return Screen();
+    return Container(
+      child: Text("rain"),
+    );
   }
 }

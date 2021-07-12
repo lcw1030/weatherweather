@@ -8,6 +8,8 @@ class Uv extends StatefulWidget {
 class _UvState extends State<Uv> {
   @override
   Widget build(BuildContext context) {
-    return Screen();
+    return Container(
+      child: Text("rain"),
+    );
   }
 }

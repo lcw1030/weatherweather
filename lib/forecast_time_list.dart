@@ -6,6 +6,8 @@ import 'package:weatherweather/weather_api.dart';
 import 'package:weatherweather/weather_api_class.dart';
 
 class ForecastTimeList extends StatefulWidget {
+  final String type;
+  ForecastTimeList({required this.type});
   //Weather weather;
   //ForecastTimeList({required this.weather});
   @override
@@ -13,7 +15,7 @@ class ForecastTimeList extends StatefulWidget {
 }
 
 class _ForecastTimeListState extends State<ForecastTimeList> {
-  late HourlyWeather weatherData;
+  //late HourlyWeather weatherData;
   //_ForecastTimeListState({required this.weather});
   @override
   Widget build(BuildContext context) {
@@ -38,9 +40,10 @@ class _ForecastTimeListState extends State<ForecastTimeList> {
                         return CircularProgressIndicator();
                       }
                       else{
-                        weatherData=snapshot.data!;
+                        HourlyWeather weatherData=snapshot.data!;
                         String time = weatherData.dt.hour >= 12 ? '오후': '오전';
                         int hour = weatherData.dt.hour > 12? weatherData.dt.hour-12: weatherData.dt.hour;
+                        hour = weatherData.dt.hour == 0? 12: weatherData.dt.hour;
                         return Container(
                           width: 80.0,
                           height: MediaQuery.of(context).size.height,
@@ -54,6 +57,7 @@ class _ForecastTimeListState extends State<ForecastTimeList> {
                                   child: Image.asset('images/icon_weather/${snapshot.data!.weatherIcon}.png'),
                                 ),
                                 Text('${snapshot.data!.temp}°'),
+                                Text('${widget.type}'),
                               ],
                             ),
                           ),
