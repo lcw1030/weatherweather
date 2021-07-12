@@ -4,6 +4,7 @@ class Styles extends Color {
   Styles(int value) : super(value);
 
   static const morning = Color(0xFF0D64E8);
+  static const morningBox = Color(0xFF176DEA);
   static const morningAccent = Color(0xFF0B58C8);
   static const morningShadow = Color(0xFF0A52BF);
   static const morningBar = Color(0xFFDCFDFA);

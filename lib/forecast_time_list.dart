@@ -19,10 +19,7 @@ class _ForecastTimeListState extends State<ForecastTimeList> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 20.0),
-      height: MediaQuery
-          .of(context)
-          .size
-          .height * 0.1,
+      height: MediaQuery.of(context).size.height * 0.1,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[

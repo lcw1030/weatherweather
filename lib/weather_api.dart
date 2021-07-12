@@ -7,8 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:weatherweather/weather_api_class.dart';
 
 const APIKEY = '54e5b04d4390d8b062b676a7c5f51957';
-const LON = '127.02111111111111';
-const LAT = '37.486000000000004';
+const LON = '126';
+const LAT = '37';
 const ENDPOINT = 'https://api.openweathermap.org';
 
 Future<Weather> getCurrentData() async {
