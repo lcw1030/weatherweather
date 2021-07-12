@@ -6,7 +6,7 @@ import 'package:weatherweather/screens/temp.dart';
 import 'package:weatherweather/screens/uv.dart';
 import 'package:weatherweather/screens/wind.dart';
 import 'package:weatherweather/styles.dart';
-
+import 'package:weatherweather/screen.dart';
 void main() {
   runApp(MyApp());
 }
@@ -48,16 +48,29 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin{
   int _currentIdx = 0;
+  late int index;
+  List<Widget> _screens = [Temp(), FeelsLike(), Uv(), Rain(), Wind(), Humidity()];
 
-  final List<Widget> _screens = [Temp(), FeelsLike(), Uv(), Rain(), Wind(), Humidity()];
+  /*@override
+  void initState() {
+    super.initState();
+    //_screens = [Temp(idx: index), FeelsLike(), Uv(), Rain(), Wind(), Humidity()];
+    index = 0;
+    pageController.addListener(() {
+      setState(() {
+        index = pageController.page!.toInt();
+      });
+    });
+  }*/
+  void _onTap(int idx) {
+    //Navigator.push(context, MaterialPageRoute(builder(context)=>Screen(idx)));
 
-  void _onTap(int index) {
-    pageController.jumpToPage(index);
+    pageController.jumpToPage(idx);
   }
 
-  void onPageChanged(int index) {
+  void onPageChanged(int idx) {
     setState(() {
-      _currentIdx = index;
+      _currentIdx = idx;
     });
   }
 
@@ -83,7 +96,6 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
             items: [
               BottomNavigationBarItem(
                 label: '온도',
-                //title: Text('Music'),
                 icon: Icon(Icons.wb_sunny),
               ),
               BottomNavigationBarItem(

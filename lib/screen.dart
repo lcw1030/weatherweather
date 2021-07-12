@@ -8,6 +8,8 @@ class Screen extends StatefulWidget {
   //final String value;
   //final String description1;
   //final String description2;
+  //final int idx;
+  //Screen({required this.idx});
   //Screen({required this.type, required this.value, required this.description1, required this.description2});
   @override
   _ScreenState createState() => _ScreenState();
