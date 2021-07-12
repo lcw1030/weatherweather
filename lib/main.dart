@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weatherweather/forecast_time_list.dart';
-import 'package:weatherweather/current_weather_api.dart';
+import 'package:weatherweather/weather_api.dart';
+import 'package:weatherweather/weather_api_class.dart';
 void main() {
   runApp(MyApp());
 }
@@ -70,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
               style: Theme.of(context).textTheme.headline4,
             ),
             FutureBuilder(
-              future: getData(),
+              future: getCurrentData(),
               builder: (context, AsyncSnapshot<Weather> snapshot) {
                 if (snapshot.hasData == false) {
                   print('snapshot');
@@ -84,12 +85,11 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                     Text('${snapshot.data!.temp}°', style: Theme.of(context).textTheme.headline2),
                     Text('최고 ${snapshot.data!.tempMax}°/ 최저 ${snapshot.data!.tempMin}°'),
                     //Image.network('http://openweathermap.org/img/wn/${snapshot.data!.weatherIcon}@2x.png', scale: 0.4),
+
                   ],
                 );
               }
             ),
-
-
             Container(
               margin: EdgeInsets.all(5),
               padding: EdgeInsets.all(5),
@@ -104,7 +104,8 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                 children: <Widget>[
                   Text(
                     "오늘",
-                    style: TextStyle(backgroundColor: Colors.lightBlue, color: Colors.white),
+                    style: TextStyle(backgroundColor: Colors.lightBlue,
+                        color: Colors.white),
                   ),
                   _forecastTimeList,
                 ],

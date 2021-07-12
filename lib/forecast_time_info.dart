@@ -1,31 +1,34 @@
-import 'package:flutter/material.dart';
 
-Widget forecastTimeInfoRow() {
+import 'package:flutter/material.dart';
+import 'package:weatherweather/weather_api_class.dart';
+/*
+Widget forecastTimeInfoRow(DisplayWeather display) {
   return Row(
     children: <Widget> [
       Expanded(
-          child: _forecastTimeInfo()
+          child: forecastTimeInfo(display)
       ),
       Expanded(
-          child: _forecastTimeInfo()
+          child: forecastTimeInfo(display)
       )
     ],
   );
-}
+}*/
 
-Widget _forecastTimeInfo () {
+Widget forecastTimeInfo (String imagePath, DisplayWeather display) {
   return Container(
-    width:100,
-    height: 100,
+    width: 150,
+    height: 120,
     margin: EdgeInsets.all(10),
     child: Column(
       children: <Widget> [
         Image.asset(
-          'images/icon_weather/cloud_clouds_cloudy_icon.png',
+          imagePath,
           width:50.0,
         ),
-        Text("온도"),
-        Text("체감"),
+        Text(display.weatherData),
+        Text(display.description1),
+        Text(display.description2??''),
       ],
     ),
   );
