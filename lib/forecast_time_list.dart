@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weatherweather/forecast_time_info.dart';
+import 'package:weatherweather/styles.dart';
 import 'package:weatherweather/weather_api.dart';
 
 import 'package:weatherweather/weather_api_class.dart';
@@ -42,6 +43,7 @@ class _ForecastTimeListState extends State<ForecastTimeList> {
                       else{
                         weatherData=snapshot.data!;
                         String time = weatherData.dt.hour >= 12 ? '오후': '오전';
+                        int hour = weatherData.dt.hour > 12? weatherData.dt.hour-12: weatherData.dt.hour;
                         return Container(
                           width: 80.0,
                           height: MediaQuery.of(context).size.height,
@@ -50,11 +52,11 @@ class _ForecastTimeListState extends State<ForecastTimeList> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Text('$time ${weatherData.dt.hour}시'),
+                                Text('$time $hour시'),
                                 Expanded(
                                   child: Image.asset('images/icon_weather/${snapshot.data!.weatherIcon}.png'),
                                 ),
-                                Text('${snapshot.data!.temp}'),
+                                Text('${snapshot.data!.temp}°'),
                               ],
                             ),
                           ),
@@ -105,7 +107,9 @@ void _forecastDialog(BuildContext context, HourlyWeather weather, int tmp) {
     builder: (BuildContext context) {
       return AlertDialog(
         contentPadding: EdgeInsets.all(5),
+        backgroundColor: Styles.dialogBG,
         content: Scaffold(
+          backgroundColor: Styles.dialogBG,
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -114,7 +118,7 @@ void _forecastDialog(BuildContext context, HourlyWeather weather, int tmp) {
                 Align (
                   alignment: Alignment.topRight,
                   child: IconButton(
-                    icon: Icon(Icons.close_rounded),
+                    icon: Icon(Icons.close_rounded, color: Styles.textColor),
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -142,7 +146,7 @@ void _forecastDialog(BuildContext context, HourlyWeather weather, int tmp) {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget> [
                           Text("${weather.weatherDescription}"),
-                          Text("비 올 확률: 20%"),
+                          Text("비 올 확률: ${weather.pop}%"),
                         ]
                     )
                   ],

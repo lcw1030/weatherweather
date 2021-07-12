@@ -22,6 +22,7 @@ class Weather {
 class HourlyWeather extends Weather {
   final DateTime dt;
   final String feelsLike;
+  final String pop;
   final String? rain;
   final int uvi;
   final int humidity;
@@ -36,6 +37,7 @@ class HourlyWeather extends Weather {
     weatherIcon,
     required this.dt,
     required this.feelsLike,
+    required this.pop,
     required this.rain,
     required this.uvi,
     required this.humidity,

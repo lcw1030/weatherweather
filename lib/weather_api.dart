@@ -24,7 +24,7 @@ Future<Weather> getCurrentData() async {
       weather = Weather(
         temp: data["current"]["temp"].toString(),
         tempMax: data["daily"][0]["temp"]["max"].toString(),
-        tempMin: data["daily"][0]["temp"]["max"].toString(),
+        tempMin: data["daily"][0]["temp"]["min"].toString(),
         weatherMain: data["current"]["weather"][0]["main"].toString(),
         weatherDescription: data["current"]["weather"][0]["description"].toString(),
         //code: int.parse(data["weather"][0]["id"].toString()),
@@ -56,7 +56,7 @@ Future<HourlyWeather> getHourlyData(int idx) async {
 
     //print(double.parse(data["hourly"][0]["dt"].toString())*1000);
     //print(data["hourly"][0]["temp"]["max"]);
-    //print(data["hourly"][idx]);
+    print(data["hourly"][idx]);
     //print(data["hourly"][idx]["weather"][0]["main"]);//["weather"]["main"]);
     try {
       //var timeDath = DateTime.fromMillisecondsSinceEpoch(int.parse(data["hourly"][idx]["dt"].toString())*1000);
@@ -71,18 +71,19 @@ Future<HourlyWeather> getHourlyData(int idx) async {
         weatherIcon: data["hourly"][idx]["weather"][0]["icon"].toString(),
         dt: DateTime.fromMillisecondsSinceEpoch(int.parse(data["hourly"][idx]["dt"].toString())*1000),
         feelsLike: data["hourly"][idx]["feels_like"].toString(),
+        pop: data["hourly"][idx]["pop"].toString(),
         rain: data["hourly"][idx]["rain"]?["1h"].toString() ?? '0',
         uvi: double.parse(data["hourly"][idx]["uvi"].toString()).toInt(),
         humidity: int.parse(data["hourly"][idx]["humidity"].toString()),
         wind: data["hourly"][idx]["wind_speed"].toString(),
       );
     } catch (e) {
-      weather = HourlyWeather(temp: "1", tempMax: "1", tempMin: "1", weatherMain: "1", weatherIcon: "02d", feelsLike: "3", rain: "1", humidity: 1, wind: "1", uvi: 7, dt: DateTime.now(), weatherDescription: 'default');
+      weather = HourlyWeather(temp: "1", tempMax: "1", tempMin: "1", weatherMain: "1", weatherIcon: "02d", feelsLike: "3", pop: "1", rain: "1", humidity: 1, wind: "1", uvi: 7, dt: DateTime.now(), weatherDescription: 'default');
 
       print(e);
     }
   } else {
-    weather = HourlyWeather(temp: "1", tempMax: "1", tempMin: "1", weatherMain: "1", weatherIcon: "02d", feelsLike: "3", rain: "1", humidity: 1, wind: "1", uvi: 7, dt: DateTime.now(), weatherDescription: 'default');
+    weather = HourlyWeather(temp: "1", tempMax: "1", tempMin: "1", weatherMain: "1", weatherIcon: "02d", feelsLike: "3", pop: "1", rain: "1", humidity: 1, wind: "1", uvi: 7, dt: DateTime.now(), weatherDescription: 'default');
 
     //weather = null as HourlyWeather;
   }
