@@ -29,20 +29,14 @@ class Screen extends StatefulWidget {
 
 class _ScreenState extends State<Screen> {
 
-
   @override
   Widget build(BuildContext context) {
     Widget _forecastTimeList = ForecastTimeList(data: widget.data, type: widget.type);
-    //print(widget.value);
     return Container(
         color: Theme.of(context).primaryColor,
-        //padding: EdgeInsets.all(5),
-
-        //height: double.infinity,
         height: MediaQuery.of(context).size.height,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-
           children: <Widget>[
             Text(
               '종로구 공평동',
@@ -70,7 +64,7 @@ class _ScreenState extends State<Screen> {
                       showCupertinoModalPopup<void>(
                         context: context,
                         builder: (BuildContext context) => CupertinoActionSheet(
-                          title: const Text('Title'),
+                          title: const Text('종로구 공평동'),
                           message: Container(
                             child: Column(
                               children: <Widget> [
@@ -83,15 +77,23 @@ class _ScreenState extends State<Screen> {
                         ),
                       );
                     },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.all(5),
-                          child: Image.asset('images/icon_weather/air_good.png', scale:8),
-                        ),
-                        Text("미세미세\n양호"),
-                      ],
+                    child: FutureBuilder(
+                      future:getAirData(),
+                      builder: (context, AsyncSnapshot<Air> snapshot) {
+                        if(snapshot.hasData == false) {
+                          return CircularProgressIndicator();
+                        }
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.all(5),
+                              child: Image.asset('images/icon_weather/air_good.png', scale:8),
+                            ),
+                            Text("미세미세\n${snapshot.data!.quality}"),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ),

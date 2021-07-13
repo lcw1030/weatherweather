@@ -21,7 +21,7 @@ class _RainState extends State<Rain> {
                 if(snapshot.hasData == false) {
                   return CircularProgressIndicator();
                 }
-                print(snapshot.data!);
+                //print(snapshot.data!);
                 Weather weatherData = extractCurrentWeather(snapshot.data!);
                 var displayInfo = formatWeather(type, weatherData);
                 return Screen(

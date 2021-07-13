@@ -21,7 +21,7 @@ class _FeelsLikeState extends State<FeelsLike> {
                 if(snapshot.hasData == false) {
                   return CircularProgressIndicator();
                 }
-                print(snapshot.data!);
+                //print(snapshot.data!);
                 Weather weatherData = extractCurrentWeather(snapshot.data!);
                 var displayInfo = formatWeather(type, weatherData);
                 return Screen(
@@ -29,7 +29,7 @@ class _FeelsLikeState extends State<FeelsLike> {
                   main: displayInfo[type]![0],
                   value:displayInfo[type]![2],
                   icon: displayInfo[type]![1],
-                  description1: '${displayInfo[type]![0]}: ${displayInfo[type]![3]}',
+                  description1: '',
                   description2: '최고 ${weatherData.tempMax}°/최저 ${weatherData.tempMin}°',
                   data: snapshot.data,
                 );

@@ -1,6 +1,4 @@
-import 'dart:math';
-
-import 'package:flutter/material.dart';
+import 'dart:math';import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -33,7 +31,7 @@ Weather extractCurrentWeather(dynamic data) {
     weatherIcon: data["current"]["weather"][0]["icon"].toString(),
     dt: DateTime.fromMillisecondsSinceEpoch(int.parse(data["current"]["dt"].toString())*1000),
     feelsLike: data["current"]["feels_like"].toString(),
-    pop: '0',//data["daily"]["pop"].toString(),
+    pop: int.parse(data["hourly"][0]["pop"].toString()),
     rain: double.parse(data["current"]["rain"]?["1h"].toString()?? '0'),
     uvi: double.parse(data["current"]["uvi"].toString()).toInt(),
     humidity: int.parse(data["current"]["humidity"].toString()),
@@ -42,12 +40,10 @@ Weather extractCurrentWeather(dynamic data) {
   );
   return weather;
 }
+
 Weather extractHourlyWeather(dynamic data, int idx) {
   Weather weather;
   try {
-    //var timeDath = DateTime.fromMillisecondsSinceEpoch(int.parse(data["hourly"][idx]["dt"].toString())*1000);
-    //String time = ()
-    //weather = Weather(temp: "1", tempMax: "1", tempMin: "1", weatherMain: "1", code: 1, weatherIcon: "02d", feelsLike: "3", rain: "1", humidity: "1", wind: "1", uvi: 0.89);
     weather = Weather(
       temp: data["hourly"][idx]["temp"].toString(),
       tempMax: data["hourly"][idx]["temp"].toString(),
@@ -57,7 +53,7 @@ Weather extractHourlyWeather(dynamic data, int idx) {
       weatherIcon: data["hourly"][idx]["weather"][0]["icon"].toString(),
       dt: DateTime.fromMillisecondsSinceEpoch(int.parse(data["hourly"][idx]["dt"].toString())*1000),
       feelsLike: data["hourly"][idx]["feels_like"].toString(),
-      pop: data["hourly"][idx]["pop"].toString(),
+      pop: int.parse(data["hourly"][idx]["pop"].toString()),
       rain: double.parse(data["hourly"][idx]["rain"]?["1h"].toString()?? '0'),
       uvi: double.parse(data["hourly"][idx]["uvi"].toString()).toInt(),
       humidity: int.parse(data["hourly"][idx]["humidity"].toString()),
@@ -65,7 +61,7 @@ Weather extractHourlyWeather(dynamic data, int idx) {
       windDirection: data["hourly"][idx]["wind_deg"].toString(),
     );
   } catch (e) {
-    weather = Weather(temp: "0", tempMax: "0", tempMin: "0", weatherMain: "0", weatherIcon: "01d", feelsLike: "0", pop: "0", rain: 0, humidity: 0, windSpeed: 0, windDirection: '0', uvi: 0, dt: DateTime.now(), weatherDescription: 'default');
+    weather = Weather(temp: "0", tempMax: "0", tempMin: "0", weatherMain: "0", weatherIcon: "01d", feelsLike: "0", pop: 0, rain: 0, humidity: 0, windSpeed: 0, windDirection: '0', uvi: 0, dt: DateTime.now(), weatherDescription: 'default');
 
     print(e);
   }
@@ -173,28 +169,26 @@ Future<Weather> getHourlyData(int idx) async {
 }
 */
 Future<Air> getAirData() async {
+  List<String> airDeg = ['Good', 'Fair', 'Moderate', 'Poor', 'Very Poor'];
   String queryStr = '$ENDPOINT/data/2.5/air_pollution?lat=$LAT&lon=$LON&appid=$APIKEY';
   http.Response response = await http.get(Uri.parse(queryStr));
   Air air;
   if (response.statusCode == 200) {
     var data = json.decode(response.body);
-    print(data["list"]);
+    print(data["list"][0]["main"]["aqi"]);
     try {
-      //weather = Weather(temp: "1", tempMax: "1", tempMin: "1", weatherMain: "1", code: 1, weatherIcon: "02d", feelsLike: "3", rain: "1", humidity: "1", wind: "1", uvi: 0.89);
       air = Air(
-        quality: int.parse(data["list"]["main"]["aqi"].toString()),
+        quality: airDeg[int.parse(data["list"][0]["main"]["aqi"].toString())-1],
       );
     } catch (e) {
-      //weather = null as Weather;
-      air = Air(quality: 5);
+      air = Air(quality: airDeg[0]);
       print(e);
     }
   } else {
-    air = Air(quality: 5);
+    air = Air(quality: airDeg[0]);
   }
   return air;
 }
-
 
 Map<String, List<dynamic>> formatWeather(String type, Weather weather) {
   String uvDeg;

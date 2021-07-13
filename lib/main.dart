@@ -6,7 +6,6 @@ import 'package:weatherweather/screens/temp.dart';
 import 'package:weatherweather/screens/uv.dart';
 import 'package:weatherweather/screens/wind.dart';
 import 'package:weatherweather/styles.dart';
-import 'package:weatherweather/screen.dart';
 void main() {
   runApp(MyApp());
 }
@@ -19,7 +18,6 @@ class MyApp extends StatelessWidget {
       title: 'WhetherWhether',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-
         primaryColor: Styles.morning,
         accentColor: Styles.morningAccent,
         primaryTextTheme: Theme.of(context).textTheme.apply(
@@ -30,8 +28,7 @@ class MyApp extends StatelessWidget {
           bodyColor: Styles.textColor,
           displayColor: Styles.textColor,
         ),
-
-        //primarySwatch: Colors.,
+        //primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'weather weather'),
     );
@@ -51,21 +48,8 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   late int index;
   List<Widget> _screens = [Temp(), FeelsLike(), Uv(), Rain(), Wind(), Humidity()];
 
-  /*@override
-  void initState() {
-    super.initState();
-    //_screens = [Temp(idx: index), FeelsLike(), Uv(), Rain(), Wind(), Humidity()];
-    index = 0;
-    pageController.addListener(() {
-      setState(() {
-        index = pageController.page!.toInt();
-      });
-    });
-  }*/
   void _onTap(int idx) {
-    //Navigator.push(context, MaterialPageRoute(builder(context)=>Screen(idx)));
-
-    pageController.jumpToPage(idx);
+   pageController.jumpToPage(idx);
   }
 
   void onPageChanged(int idx) {

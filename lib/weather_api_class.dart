@@ -8,7 +8,7 @@ class Weather {
   final String weatherIcon;
   final DateTime dt;
   final String feelsLike;
-  final String pop;
+  final int pop;
   final double? rain;
   final int uvi;
   final int humidity;
@@ -69,7 +69,7 @@ class HourlyWeather extends Weather {
 }*/
 
 class Air {
-  final int quality;
+  final String quality;
   Air({required this.quality});
 }
 
