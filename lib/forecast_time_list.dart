@@ -51,7 +51,8 @@ class _ForecastTimeListState extends State<ForecastTimeList> {
                         Text('${displayData[widget.type]![2]}'),
                       ],
                     ),
-                  ),/*FutureBuilder(
+                  ),
+                  /*FutureBuilder(
                     future: getHourlyData(idx),
                     builder: (context, AsyncSnapshot<Weather> snapshot) {
                       if(snapshot.hasData == false) {
@@ -178,7 +179,3 @@ void _forecastDialog(BuildContext context, dynamic displayData) {
       );
     });
 }
-/*
-DisplayWeather DisplayWeatherInfo(HourlyWeather weather) {
-
-}*/

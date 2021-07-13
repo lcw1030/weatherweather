@@ -20,6 +20,7 @@ Future<dynamic> getData() async{
   }
   return data;
 }
+
 Weather extractCurrentWeather(dynamic data) {
   Weather weather = Weather(
     temp: data["current"]["temp"].toString(),

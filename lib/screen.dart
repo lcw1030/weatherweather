@@ -42,6 +42,7 @@ class _ScreenState extends State<Screen> {
               '종로구 공평동',
               style: Theme.of(context).textTheme.headline4,
             ),
+            Text('${widget.main}'),
             Image.asset('images/icon_weather/${widget.icon}.png', scale: 1.5),
             Text('${widget.value}', style: Theme.of(context).textTheme.headline2),
             Text('${widget.description1}'),
