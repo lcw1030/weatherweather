@@ -3,7 +3,7 @@
 weatherweather application
 
 7/13 코드 리뷰
-- Listview -> Map 사용하면 코드 더 깔끔해짐
+- Listview부분 Map 사용하면 코드 더 깔끔해짐
 - IDE: Dart Analysis 탭 확인하기
 - ** class는 대문자로 시작
 - 구조 평면적 x
