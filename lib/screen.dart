@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weatherweather/styles.dart';
 import 'package:weatherweather/weather_api.dart';
@@ -32,12 +33,10 @@ class _ScreenState extends State<Screen> {
     //print(widget.value);
     return Container(
         color: Theme.of(context).primaryColor,
-        padding: EdgeInsets.all(20),
-        constraints: BoxConstraints(
-          maxHeight: double.infinity,
-        ),
+        //padding: EdgeInsets.all(5),
+
         //height: double.infinity,
-        //height: MediaQuery.of(context).size.height*0.5,
+        height: MediaQuery.of(context).size.height,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
 
@@ -50,30 +49,55 @@ class _ScreenState extends State<Screen> {
             Text('${widget.value}', style: Theme.of(context).textTheme.headline2),
             Text('${widget.description1}'),
             Text('${widget.description2}'),
+            Row(
+              children: <Widget>[
+                Spacer(flex: 1),
+                Container(
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Styles.morningBox,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
 
-            /*FutureBuilder(
-              future: getCurrentData(),
-              builder: (context, AsyncSnapshot<Weather> snapshot) {
-                if (snapshot.hasData == false) {
-                  print('snapshot');
-                  return CircularProgressIndicator();
-                }
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    //Text('${widget.type}'),
-                    Image.asset('images/icon_weather/${snapshot.data!.weatherIcon}.png', scale: 1.5),
-                    Text('${snapshot.data!.temp}°', style: Theme.of(context).textTheme.headline2),
-                    Text('최고 ${snapshot.data!.tempMax}°/ 최저 ${snapshot.data!.tempMin}°'),
-                    //Image.network('http://openweathermap.org/img/wn/${snapshot.data!.weatherIcon}@2x.png', scale: 0.4),
-                  ],
-                );
-              }
-          ),*/
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      showCupertinoModalPopup<void>(
+                        context: context,
+                        builder: (BuildContext context) => CupertinoActionSheet(
+                          title: const Text('Title'),
+                          message: Container(
+                            child: Column(
+                              children: <Widget> [
+                                Text('종로구 공평동'),
+                                Image.asset('images/icon_weather/air_good.png'),
+                              ],
+                            ),
+                          ),
+                          actions: [],
+                        ),
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.all(5),
+                          child: Image.asset('images/icon_weather/air_good.png', scale:8),
+                        ),
+                        Text("미세미세\n양호"),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
             Container(
               margin: EdgeInsets.all(5),
               padding: EdgeInsets.all(5),
-              height: MediaQuery.of(context).size.height*0.2,
+              //height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(
                 color: Styles.morningBox,
                 borderRadius: BorderRadius.all(

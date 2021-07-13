@@ -13,28 +13,31 @@ class _TempState extends State<Temp> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget> [
-        FutureBuilder(
-            future: getCurrentData(),
-            builder: (context, AsyncSnapshot<Weather> snapshot) {
-              if (snapshot.hasData == false) {
-                print('snapshot');
-                return CircularProgressIndicator();
-              }
-              return Screen(
-                type: 'temp',
-                main: '${snapshot.data!.weatherDescription}',
-                value: '${snapshot.data!.temp}',
-                icon: '${snapshot.data!.weatherIcon}',
-                description1: '최고 ${snapshot.data!.tempMax}°/최저 ${snapshot.data!.tempMin}°',
-                description2: '',
-              );
+    return SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          children: <Widget> [
+            FutureBuilder(
+              future: getCurrentData(),
+              builder: (context, AsyncSnapshot<Weather> snapshot) {
+                if (snapshot.hasData == false) {
+                  print('snapshot');
+                  return CircularProgressIndicator();
+                }
+                return Screen(
+                  type: 'temp',
+                  main: '${snapshot.data!.weatherDescription}',
+                  value: '${snapshot.data!.temp}',
+                  icon: '${snapshot.data!.weatherIcon}',
+                  description1: '최고 ${snapshot.data!.tempMax}°/최저 ${snapshot.data!.tempMin}°',
+                  description2: '',
+                );
 
-            },
+              },
+            ),
+
+          ],
         ),
-
-      ],
     );
     //return Screen();
   }

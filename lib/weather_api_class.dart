@@ -68,6 +68,11 @@ class HourlyWeather extends Weather {
       weatherIcon: weatherIcon);
 }*/
 
+class Air {
+  final int quality;
+  Air({required this.quality});
+}
+
 class DisplayWeather {
   //final String weatherIcon;
   final String weatherData;
@@ -105,3 +110,4 @@ Map<String, List<dynamic>> ExtractWeather(String type, Weather weather) {
   return displayData;
 
 }
+

@@ -69,7 +69,7 @@ flutter:
     - images/icon_weather/status_wind.png
     - images/icon_weather/status_humidity.png
     - images/icon_weather/pinwheel.gif
-
+    - images/icon_weather/air_good.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

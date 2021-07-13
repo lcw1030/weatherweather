@@ -110,6 +110,28 @@ Future<Weather> getHourlyData(int idx) async {
   return weather;
 }
 
+Future<Air> getAirData() async {
+  String queryStr = '$ENDPOINT/data/2.5/air_pollution?lat=$LAT&lon=$LON&appid=$APIKEY';
+  http.Response response = await http.get(Uri.parse(queryStr));
+  Air air;
+  if (response.statusCode == 200) {
+    var data = json.decode(response.body);
+    print(data["list"]);
+    try {
+      //weather = Weather(temp: "1", tempMax: "1", tempMin: "1", weatherMain: "1", code: 1, weatherIcon: "02d", feelsLike: "3", rain: "1", humidity: "1", wind: "1", uvi: 0.89);
+      air = Air(
+        quality: int.parse(data["list"]["main"]["aqi"].toString()),
+      );
+    } catch (e) {
+      //weather = null as Weather;
+      air = Air(quality: 5);
+      print(e);
+    }
+  } else {
+    air = Air(quality: 5);
+  }
+  return air;
+}
 
 
 
