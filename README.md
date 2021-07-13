@@ -7,9 +7,10 @@ weatherweather application
 - IDE: Dart Analysis 탭 확인하기
 - ** class는 대문자로 시작
 - 구조 평면적 x
+- 안드로이드에서 overflow 확인
 - 아이콘 추천: flaticon
 - 알맞은 외부패키지가 있다면 사용하는 방법도 있음
-- Provider 사용해보기(현재 방식은 API에서 받아온 데이터 필요할 때마다 UI에서 호출해서 파싱해오는 방식) 
+- Provider 사용(현재 방식은 API에서 받아온 데이터 필요할 때마다 UI에서 호출해서 파싱해오는 방식) 
 
 ## Getting Started
 
