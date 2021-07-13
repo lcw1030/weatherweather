@@ -6,8 +6,9 @@ import 'package:weatherweather/weather_api.dart';
 import 'package:weatherweather/weather_api_class.dart';
 
 class ForecastTimeList extends StatefulWidget {
+  final dynamic data;
   final String type;
-  ForecastTimeList({required this.type});
+  ForecastTimeList({required this.data, required this.type});
   //Weather weather;
   //ForecastTimeList({required this.weather});
   @override
@@ -30,10 +31,27 @@ class _ForecastTimeListState extends State<ForecastTimeList> {
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
               children: List<Widget>.generate(10, (idx) {
+                Weather weatherData = extractHourlyWeather(widget.data, idx);
+                var displayData = formatWeather(widget.type, weatherData);
                 return Container(
                   width: 80.0,
                   height: MediaQuery.of(context).size.height,
-                  child: FutureBuilder(
+                  child: GestureDetector(
+                    onTap: () => _forecastDialog(context, displayData),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text('${displayData['time']![0]}'),
+                        Text('${displayData[widget.type]![3]}'),
+                        //Image.asset('images/icon_weather/${displayData[widget.type]![0]}.png'),
+                        Expanded(
+                          flex: 3,
+                          child: Image.asset('images/icon_weather/${displayData[widget.type]![1]}.png'),
+                        ),
+                        Text('${displayData[widget.type]![2]}'),
+                      ],
+                    ),
+                  ),/*FutureBuilder(
                     future: getHourlyData(idx),
                     builder: (context, AsyncSnapshot<Weather> snapshot) {
                       if(snapshot.hasData == false) {
@@ -41,7 +59,7 @@ class _ForecastTimeListState extends State<ForecastTimeList> {
                       }
                       else{
                         Weather weatherData=snapshot.data!;
-                        var displayData = ExtractWeather(widget.type, weatherData);
+                        var displayData = formatWeather(widget.type, weatherData);
                         print(displayData[widget.type]);
                         //print(displayData[widget.type]![2]);
                         String time = weatherData.dt.hour >= 12 ? '오후': '오전';
@@ -69,7 +87,7 @@ class _ForecastTimeListState extends State<ForecastTimeList> {
                         );
                       }
                     },
-                  ),
+                  ),*/
                 );
               })
             ),
@@ -82,31 +100,13 @@ class _ForecastTimeListState extends State<ForecastTimeList> {
   }
 }
 
-void _forecastDialog(BuildContext context, Weather weather, int tmp) {
+void _forecastDialog(BuildContext context, dynamic displayData) {
 
-  int month = weather.dt.month;
-  int date = weather.dt.day;
-  int day = weather.dt.weekday;
-  int hour = weather.dt.hour;
-  String time = (hour >= 12)? '오후':'오전';
-  List<String> weekday= ['월', '화', '수', '목', '금', '토', '일'];
-  print('$month월 $date일 $day요일 $hour시');
-  String uvDeg;
-  String humidityDeg;
-  if (weather.uvi < 3) {uvDeg = '낮음';}
-  else if(weather.uvi < 6) {uvDeg = '보통';}
-  else if(weather.uvi < 8) {uvDeg = '높음';}
-  else {uvDeg = '매우 높음';}
-
-  if (weather.humidity < 40) {humidityDeg = '낮음';}
-  else if(weather.humidity < 60) {humidityDeg = '보통';}
-  else if(weather.humidity < 80) {humidityDeg = '높음';}
-  else {humidityDeg = '매우 높음';}
-  DisplayWeather displayTemp = DisplayWeather(weatherData: '온도: ${weather.temp}°', description1: '체감: ${weather.feelsLike}°');
-  DisplayWeather displayRain = DisplayWeather(weatherData: '강수: ${weather.rain}mm', description1: '없음');
-  DisplayWeather displayUv = DisplayWeather(weatherData: '자외선 수치: ${weather.uvi}', description1: '$uvDeg');
-  DisplayWeather displayWind = DisplayWeather(weatherData: '바람: ${weather.windSpeed}km/h', description1: '남서', description2: '약함');
-  DisplayWeather displayHumidity = DisplayWeather(weatherData: '습도: ${weather.humidity}%', description1: '$humidityDeg');
+  DisplayWeather displayTemp = DisplayWeather(weatherData: '온도: ${displayData['temp']![2]}', description1: '체감: ${displayData['feelslike']![2]}', icon: 'status_temp');
+  DisplayWeather displayRain = DisplayWeather(weatherData: '강수: ${displayData['rain']![3]}', description1: '${displayData['rain']![2]}', icon: '${displayData['rain']![1]}');
+  DisplayWeather displayUv = DisplayWeather(weatherData: '자외선 수치: ${displayData['uv']![3]}', description1: '${displayData['uv']![2]}', icon: '${displayData['uv']![1]}');
+  DisplayWeather displayWind = DisplayWeather(weatherData: '바람: ${displayData['wind']![3]}', description1: '${displayData['uv']![3]}', description2: '${displayData['wind']![2]}', icon: '${displayData['wind']![1]}');
+  DisplayWeather displayHumidity = DisplayWeather(weatherData: '습도: ${displayData['humidity']![3]}', description1: '${displayData['humidity']![2]}', icon: '${displayData['humidity']![1]}');
 
   showDialog(
     context: context,
@@ -130,12 +130,8 @@ void _forecastDialog(BuildContext context, Weather weather, int tmp) {
                     },
                   ),
                 ),
-                Text(
-                  "$month.$date (${weekday[day-1]})",
-                ),
-                Text(
-                  '$time $hour시',
-                ),
+                Text('${displayData['time']![1]}'),
+                Text('${displayData['time']![0]}'),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget> [
@@ -144,15 +140,15 @@ void _forecastDialog(BuildContext context, Weather weather, int tmp) {
                       margin: EdgeInsets.only(bottom: 10.0),
                       padding: EdgeInsets.all(8.0),
                       child: Image.asset(
-                        'images/icon_weather/${weather.weatherIcon}.png',
+                        'images/icon_weather/${displayData['temp']![1]}.png',
                         width:50.0,
                       ),
                     ),
                     Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget> [
-                          Text("${weather.weatherDescription}"),
-                          Text("비 올 확률: ${weather.pop}%"),
+                          Text("${displayData['temp']![0]}"),
+                          Text("${displayData['pop']![0]}"),
                         ]
                     )
                   ],
@@ -166,11 +162,11 @@ void _forecastDialog(BuildContext context, Weather weather, int tmp) {
                     shrinkWrap: true,
                     childAspectRatio: 0.8,
                     children: <Widget>[
-                      forecastTimeInfo('images/icon_weather/status_temp.png', displayTemp),
-                      forecastTimeInfo('images/icon_weather/status_rain.png', displayRain),
-                      forecastTimeInfo('images/icon_weather/status_uv.png', displayUv),
-                      forecastTimeInfo('images/icon_weather/status_wind.png', displayWind),
-                      forecastTimeInfo('images/icon_weather/status_humidity.png', displayHumidity),
+                      forecastTimeInfo(displayTemp),
+                      forecastTimeInfo(displayRain),
+                      forecastTimeInfo(displayUv),
+                      forecastTimeInfo(displayWind),
+                      forecastTimeInfo(displayHumidity),
                       Image.asset('images/icon_weather/pinwheel.gif', height: 120),
                     ],
                   ),

@@ -10,7 +10,7 @@ class Temp extends StatefulWidget {
 }
 
 class _TempState extends State<Temp> {
-
+  String type = 'temp';
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -18,22 +18,24 @@ class _TempState extends State<Temp> {
         child: Column(
           children: <Widget> [
             FutureBuilder(
-              future: getCurrentData(),
-              builder: (context, AsyncSnapshot<Weather> snapshot) {
-                if (snapshot.hasData == false) {
-                  print('snapshot');
+              future: getData(),
+              builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                if(snapshot.hasData == false) {
                   return CircularProgressIndicator();
                 }
+                print(snapshot.data!);
+                Weather weatherData = extractCurrentWeather(snapshot.data!);
+                var displayInfo = formatWeather(type, weatherData);
                 return Screen(
-                  type: 'temp',
-                  main: '${snapshot.data!.weatherDescription}',
-                  value: '${snapshot.data!.temp}',
-                  icon: '${snapshot.data!.weatherIcon}',
-                  description1: '최고 ${snapshot.data!.tempMax}°/최저 ${snapshot.data!.tempMin}°',
-                  description2: '',
+                  type: type,
+                  main: displayInfo[type]![0],
+                  value:displayInfo[type]![2],
+                  icon: displayInfo[type]![1],
+                  description1: '${displayInfo[type]![0]}: ${displayInfo[type]![3]}',
+                  description2: '최고 ${weatherData.tempMax}°/최저 ${weatherData.tempMin}°',
+                  data: snapshot.data,
                 );
-
-              },
+              }
             ),
 
           ],

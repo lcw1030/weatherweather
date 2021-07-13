@@ -11,6 +11,68 @@ const LON = '126';
 const LAT = '37';
 const ENDPOINT = 'https://api.openweathermap.org';
 
+Future<dynamic> getData() async{
+  String queryStr = '$ENDPOINT/data/2.5/onecall?lat=$LAT&lon=$LON&exclude=minutely,alerts&appid=$APIKEY&units=metric&lang=kr';
+  http.Response response = await http.get(Uri.parse(queryStr));
+  var data;
+  if (response.statusCode == 200) {
+    data = json.decode(response.body);
+  } else {
+    data = 0;
+  }
+  return data;
+}
+Weather extractCurrentWeather(dynamic data) {
+  Weather weather = Weather(
+    temp: data["current"]["temp"].toString(),
+    tempMax: data["daily"][0]["temp"]["max"].toString(),
+    tempMin: data["daily"][0]["temp"]["min"].toString(),
+    weatherMain: data["current"]["weather"][0]["main"].toString(),
+    weatherDescription: data["current"]["weather"][0]["description"].toString(),
+    //code: int.parse(data["weather"][0]["id"].toString()),
+    weatherIcon: data["current"]["weather"][0]["icon"].toString(),
+    dt: DateTime.fromMillisecondsSinceEpoch(int.parse(data["current"]["dt"].toString())*1000),
+    feelsLike: data["current"]["feels_like"].toString(),
+    pop: '0',//data["daily"]["pop"].toString(),
+    rain: double.parse(data["current"]["rain"]?["1h"].toString()?? '0'),
+    uvi: double.parse(data["current"]["uvi"].toString()).toInt(),
+    humidity: int.parse(data["current"]["humidity"].toString()),
+    windSpeed: double.parse(data["current"]["wind_speed"].toString()),
+    windDirection: data["current"]["wind_deg"].toString(),
+  );
+  return weather;
+}
+Weather extractHourlyWeather(dynamic data, int idx) {
+  Weather weather;
+  try {
+    //var timeDath = DateTime.fromMillisecondsSinceEpoch(int.parse(data["hourly"][idx]["dt"].toString())*1000);
+    //String time = ()
+    //weather = Weather(temp: "1", tempMax: "1", tempMin: "1", weatherMain: "1", code: 1, weatherIcon: "02d", feelsLike: "3", rain: "1", humidity: "1", wind: "1", uvi: 0.89);
+    weather = Weather(
+      temp: data["hourly"][idx]["temp"].toString(),
+      tempMax: data["hourly"][idx]["temp"].toString(),
+      tempMin: data["hourly"][idx]["temp"].toString(),
+      weatherMain: data["hourly"][idx]["weather"][0]["main"].toString(),
+      weatherDescription: data["hourly"][idx]["weather"][0]["description"].toString(),
+      weatherIcon: data["hourly"][idx]["weather"][0]["icon"].toString(),
+      dt: DateTime.fromMillisecondsSinceEpoch(int.parse(data["hourly"][idx]["dt"].toString())*1000),
+      feelsLike: data["hourly"][idx]["feels_like"].toString(),
+      pop: data["hourly"][idx]["pop"].toString(),
+      rain: double.parse(data["hourly"][idx]["rain"]?["1h"].toString()?? '0'),
+      uvi: double.parse(data["hourly"][idx]["uvi"].toString()).toInt(),
+      humidity: int.parse(data["hourly"][idx]["humidity"].toString()),
+      windSpeed: double.parse(data["hourly"][idx]["wind_speed"].toString()),
+      windDirection: data["hourly"][idx]["wind_deg"].toString(),
+    );
+  } catch (e) {
+    weather = Weather(temp: "0", tempMax: "0", tempMin: "0", weatherMain: "0", weatherIcon: "01d", feelsLike: "0", pop: "0", rain: 0, humidity: 0, windSpeed: 0, windDirection: '0', uvi: 0, dt: DateTime.now(), weatherDescription: 'default');
+
+    print(e);
+  }
+
+  return weather;
+}
+/*
 Future<Weather> getCurrentData() async {
   String queryStr = '$ENDPOINT/data/2.5/onecall?lat=$LAT&lon=$LON&exclude=minutely,alerts&appid=$APIKEY&units=metric&lang=kr';
   http.Response response = await http.get(Uri.parse(queryStr));
@@ -109,7 +171,7 @@ Future<Weather> getHourlyData(int idx) async {
   }
   return weather;
 }
-
+*/
 Future<Air> getAirData() async {
   String queryStr = '$ENDPOINT/data/2.5/air_pollution?lat=$LAT&lon=$LON&appid=$APIKEY';
   http.Response response = await http.get(Uri.parse(queryStr));
@@ -133,6 +195,43 @@ Future<Air> getAirData() async {
   return air;
 }
 
+
+Map<String, List<dynamic>> formatWeather(String type, Weather weather) {
+  String uvDeg;
+  String humidityDeg;
+  String rainDeg = (weather.rain == 0) ? '없음':'있음';
+  String windDeg;
+  String time = weather.dt.hour >= 12 ? '오후': '오전';
+  int hour = weather.dt.hour > 12? weather.dt.hour-12: weather.dt.hour;
+  hour = weather.dt.hour == 0? 12: weather.dt.hour;
+  List<String> weekday= ['월', '화', '수', '목', '금', '토', '일'];
+
+  if (weather.uvi < 3) {uvDeg = '낮음';}
+  else if(weather.uvi < 6) {uvDeg = '보통';}
+  else if(weather.uvi < 8) {uvDeg = '높음';}
+  else {uvDeg = '매우 높음';}
+
+  if (weather.humidity < 40) {humidityDeg = '낮음';}
+  else if(weather.humidity < 60) {humidityDeg = '보통';}
+  else if(weather.humidity < 80) {humidityDeg = '높음';}
+  else {humidityDeg = '매우 높음';}
+
+  if(weather.windSpeed < 3) {windDeg = '없음';}
+  else if(weather.windSpeed <10) {windDeg = '약함';}
+  else {windDeg = '강함';}
+  var displayData = {
+    'time': ['$time $hour시', '${weather.dt.month}.${weather.dt.day} (${weekday[weather.dt.weekday - 1]})'],
+    'temp': [weather.weatherDescription, weather.weatherIcon, '${weather.temp}°', ''],
+    'feelslike': [weather.weatherDescription, weather.weatherIcon, '${weather.feelsLike}°', ''],
+    'uv': ['자외선','status_uv', uvDeg, '(${weather.uvi})', ],
+    'rain': ['강수','status_rain', rainDeg, '${weather.rain}mm'],
+    'wind': ['바람','status_wind', windDeg, '${weather.windSpeed}km/h', '${weather.windDirection}'],
+    'humidity': ['습도','status_humidity', humidityDeg, '${weather.humidity}%'],
+    'pop': ['비 올 확률: ${weather.pop}%'],
+  };
+  return displayData;
+
+}
 
 
 

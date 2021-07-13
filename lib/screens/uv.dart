@@ -12,31 +12,32 @@ class _UvState extends State<Uv> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          children: <Widget>[
-            FutureBuilder(
-              future: getCurrentData(),
-              builder: (context, AsyncSnapshot<Weather> snapshot) {
-                if (snapshot.hasData == false) {
-                  print('snapshot');
+      scrollDirection: Axis.vertical,
+      child: Column(
+        children: <Widget> [
+          FutureBuilder(
+              future: getData(),
+              builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                if(snapshot.hasData == false) {
                   return CircularProgressIndicator();
                 }
-                Weather weatherData = snapshot.data!;
-                var displayInfo = ExtractWeather(type, weatherData);
+                print(snapshot.data!);
+                Weather weatherData = extractCurrentWeather(snapshot.data!);
+                var displayInfo = formatWeather(type, weatherData);
                 return Screen(
                   type: type,
                   main: displayInfo[type]![0],
+                  value:displayInfo[type]![2],
                   icon: displayInfo[type]![1],
-                  value: displayInfo[type]![2],
                   description1: '${displayInfo[type]![0]}: ${displayInfo[type]![3]}',
                   description2: '',
+                  data: snapshot.data,
                 );
-              },
-            ),
+              }
+          ),
 
-          ],
-        ),
+        ],
+      ),
     );
   }
 }

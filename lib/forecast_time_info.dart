@@ -15,7 +15,7 @@ Widget forecastTimeInfoRow(DisplayWeather display) {
   );
 }*/
 
-Widget forecastTimeInfo (String imagePath, DisplayWeather display) {
+Widget forecastTimeInfo (DisplayWeather display) {
   return Container(
     width: 150,
     height: 120,
@@ -23,7 +23,7 @@ Widget forecastTimeInfo (String imagePath, DisplayWeather display) {
     child: Column(
       children: <Widget> [
         Image.asset(
-          imagePath,
+          'images/icon_weather/${display.icon}.png',
           width:50.0,
         ),
         Text(display.weatherData),

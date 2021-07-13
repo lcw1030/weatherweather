@@ -14,29 +14,31 @@ class _FeelsLikeState extends State<FeelsLike> {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(
-        children: <Widget>[
+        children: <Widget> [
           FutureBuilder(
-            future: getCurrentData(),
-            builder: (context, AsyncSnapshot<Weather> snapshot) {
-              if (snapshot.hasData == false) {
-                print('snapshot');
-                return CircularProgressIndicator();
+              future: getData(),
+              builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                if(snapshot.hasData == false) {
+                  return CircularProgressIndicator();
+                }
+                print(snapshot.data!);
+                Weather weatherData = extractCurrentWeather(snapshot.data!);
+                var displayInfo = formatWeather(type, weatherData);
+                return Screen(
+                  type: type,
+                  main: displayInfo[type]![0],
+                  value:displayInfo[type]![2],
+                  icon: displayInfo[type]![1],
+                  description1: '${displayInfo[type]![0]}: ${displayInfo[type]![3]}',
+                  description2: '최고 ${weatherData.tempMax}°/최저 ${weatherData.tempMin}°',
+                  data: snapshot.data,
+                );
               }
-              Weather weatherData = snapshot.data!;
-              var displayInfo = ExtractWeather(type, weatherData);
-              return Screen(
-                type: type,
-                main: displayInfo[type]![0],
-                icon: displayInfo[type]![1],
-                value: displayInfo[type]![2],
-                description1: '최고 ${snapshot.data!.tempMax}°/최저 ${snapshot.data!.tempMin}°',
-                description2: '',
-              );
-            },
           ),
 
         ],
-      )
+      ),
     );
   }
 }
+//'최고 ${snapshot.data!.tempMax}°/최저 ${snapshot.data!.tempMin}°',

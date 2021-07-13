@@ -11,6 +11,7 @@ class Screen extends StatefulWidget {
   final String value;
   final String description1;
   final String description2;
+  final dynamic data;
   //final int idx;
   //Screen({required this.idx});
   Screen({
@@ -19,7 +20,9 @@ class Screen extends StatefulWidget {
     required this.icon,
     required this.value,
     required this.description1,
-    required this.description2});
+    required this.description2,
+    required this.data
+  });
   @override
   _ScreenState createState() => _ScreenState();
 }
@@ -29,7 +32,7 @@ class _ScreenState extends State<Screen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget _forecastTimeList = ForecastTimeList(type: widget.type);
+    Widget _forecastTimeList = ForecastTimeList(data: widget.data, type: widget.type);
     //print(widget.value);
     return Container(
         color: Theme.of(context).primaryColor,
